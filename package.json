@@ -4,6 +4,7 @@
   "description": "<div align=\"center\"><img src=\"images/ayah-blue-blue.png\" style=\"border-radius: 10%;width: 100px\"></center> </div>",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,6 +13,7 @@
     "@telegraf/entity": "^0.6.0",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "luxon": "^3.7.1",
     "mongoose": "^8.16.4",
     "node-cron": "^4.2.1",
     "nodemon": "^3.1.10",
