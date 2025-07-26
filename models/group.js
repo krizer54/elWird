@@ -27,6 +27,13 @@ const groupSchema = new mongoose.Schema({
 
   adhkarEveningEnabled: { type: Boolean, default: false },
   adhkarEveningTime: { type: String, default: null }, // "16:00" to "22:00"
+  
+  quranTimes: {
+    morning: { type: String, default: "6:00" }, // مثل "06:00"
+    evening: { type: String, default: "18:00" }  // مثل "17:30"
+  },
+
+  quranCurrentPage: { type: Number, default: 1 }, // يتقدّم مع كل إرسال
 
   // بيانات إضافية مستقبلية
   adminChatId: { type: String }, // معرّف صاحب البوت في القروب، مفيد إن كنت تربط مع مستخدم
