@@ -27,6 +27,7 @@ const groupSchema = new mongoose.Schema({
 
   adhkarEveningEnabled: { type: Boolean, default: false },
   adhkarEveningTime: { type: String, default: null }, // "16:00" to "22:00"
+  quranWirdEnabled: { type: Boolean, default: false },
   
   quranTimes: {
     morning: { type: String, default: "6:00" }, // مثل "06:00"

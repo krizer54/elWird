@@ -145,8 +145,13 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
     var isMorning = ctx.match[0].startsWith('edit_quran_morning');
     console.log(isMorning)
     var prefix = isMorning ? 'morning' : 'evening';
-    var groupId = ctx.match[1];
 
+    var data = ctx.update.callback_query.data
+    var parts = data.split('_');
+    console.log(parts)
+
+
+    var groupId = parts[3];
     var buttons = [];
 
     if (prefix == 'morning') {
@@ -158,13 +163,14 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
         buttons.push(Markup.button.callback(`${hour}:00`, `set_quran_evening_${groupId}_${hour}`));
       }
     }
+    console.log(buttons)
 
     await ctx.editMessageText(
       `🕓 اختر توقيت ${isMorning ? 'الصباح' : 'المساء'} لتلقي الورد القرآني:`, Markup.inlineKeyboard(groupButtonsInRows(buttons, perRow = 4)));
   });
 
 
-  bot.action(/set_quran_(morning|evening)/, async (ctx) => {
+  bot.action(/set_quran_(morning|evening)_(.+)/, async (ctx) => {
     //   const period = ctx.match[1];
     var data = ctx.update.callback_query.data
     var parts = data.split('_');
@@ -172,11 +178,11 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
     var period = parts[2];      // "morning"
     var groupId = parts[3];   // "-1002605147414"
     var time = parts[4];  // 4
-    // console.log(ctx.match)
+    console.log(parts)
 
     const group = await Group.findOneAndUpdate(
       { chatId: groupId },
-      { $set: { [`quranTimes.${period}`]: time } },
+      { $set: { [`quranTimes.${period}`]: time, quranWirdEnabled: true } },
       { upsert: true, new: true }
     );
 
