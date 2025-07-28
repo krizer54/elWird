@@ -1,0 +1,19 @@
+# fly.toml app configuration file generated for elwirdbot on 2025-07-28T02:37:35Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'elwirdbot'
+primary_region = 'cdg'
+
+[build]
+
+[env]
+  BOT_TOKEN="7280435919:AAGfA7J2J-U0aACYQX-IG2FcfjGnWg7l3Bg"
+  dbURI="mongodb+srv://zedkrimo:1954@cluster0.aticu.mongodb.net/elWird?retryWrites=true&w=majority&appName=Cluster0"
+  TZ="Asia/Riyadh"
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256

@@ -37,7 +37,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
   // 📌 عرض إعدادات القناة أو المجموعة
   bot.action(/settingsId_(.+)/, async (ctx) => {
-    await ctx.answerCbQuery();
+    await ctx.answerCbQuery("جاري التحميل ...");
+
     var groupId = ctx.match[1];
 
     var item = await Group.findOne({ chatId: groupId });
@@ -62,7 +63,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
   // 📌 اختيار توقيت أذكار الصباح (من 5 إلى 12)
   bot.action(/edit_morning_(.+)/, async (ctx) => {
-    await ctx.answerCbQuery();
+    await ctx.answerCbQuery("جاري التحميل ...");
+
     const groupId = ctx.match[1];
 
     var buttons = [];
@@ -78,7 +80,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
   // 📌 اختيار توقيت أذكار المساء (من 16 إلى 22)
   bot.action(/edit_evening_(.+)/, async (ctx) => {
-    await ctx.answerCbQuery();
+    await ctx.answerCbQuery("جاري التحميل ...");
+
     const groupId = ctx.match[1];
 
     const buttons = [];
@@ -94,7 +97,7 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
   // 📌 تعيين التوقيت المختار - صباح
   bot.action(/set_morning_(.+)_(\d+)/, async (ctx) => {
-    await ctx.answerCbQuery();
+    await ctx.answerCbQuery("جاري التحميل ...");
     const groupId = ctx.match[1];
     const selectedTime = ctx.match[2];
 
@@ -119,7 +122,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
   // 📌 تعيين التوقيت المختار - مساء
   bot.action(/set_evening_(.+)_(\d+)/, async (ctx) => {
-    await ctx.answerCbQuery();
+    await ctx.answerCbQuery("جاري التحميل ...");
+
     const groupId = ctx.match[1];
     const selectedTime = ctx.match[2];
 
@@ -142,6 +146,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
 
   bot.action(/edit_quran_(morning|evening)_(.+)/, async (ctx) => {
+    await ctx.answerCbQuery("جاري التحميل ...");
+
     var isMorning = ctx.match[0].startsWith('edit_quran_morning');
     console.log(isMorning)
     var prefix = isMorning ? 'morning' : 'evening';
@@ -171,6 +177,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
 
   bot.action(/set_quran_(morning|evening)_(.+)/, async (ctx) => {
+    await ctx.answerCbQuery("جاري التحميل ...");
+
     //   const period = ctx.match[1];
     var data = ctx.update.callback_query.data
     var parts = data.split('_');

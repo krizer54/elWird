@@ -1,7 +1,6 @@
 const startHandler = async (bot, Scenes, enter, leave, Markup, User) => {
   bot.start(async (ctx, next) => {
     try {
-      const text = ctx.update.message.text;
       const sub_day = new Date().toLocaleDateString('en-US');
       const { id, first_name, username } = ctx.chat;
 

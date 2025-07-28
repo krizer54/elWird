@@ -3,7 +3,7 @@ const moment = require('moment-timezone');
 const fs = require('fs');
 const path = require('path');
 
-const cronHandler = async (bot, Group, QuranPage, cron, Scenes, enter, leave, Markup) => {
+const cronHandler = async (bot, Group, QuranPage,AthkarData, cron, Scenes, enter, leave, Markup) => {
 
     const photoPath = path.join(__dirname, '../db/athkarPhoto', 'athkarEvening.jpg');
 
@@ -36,12 +36,9 @@ const cronHandler = async (bot, Group, QuranPage, cron, Scenes, enter, leave, Ma
     // الدالة لإرسال أذكار الصباح أو المساء حسب التصنيف
     async function sendAdhkarByCategory(bot, chatId, category) {
         try {
-            // تحميل الملف
-            const filePath = path.join(__dirname, '../db/data/adkar.json');
-            const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
             // التحقق من وجود التصنيف
-            const adhkarList = data[category];
+            var adhkarList = AthkarData[category];
             if (!adhkarList || !Array.isArray(adhkarList)) {
                 return console.log(`❌ لم يتم العثور على أذكار في هذا التصنيف. ${category}`);
             }

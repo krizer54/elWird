@@ -3,9 +3,9 @@ function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-const inlineQuranayaHandler = (bot, QuranData) => {
+const inlineQuranayaHandler = (bot, QuranData,uuidv4) => {
 
-  bot.inlineQuery(/^a/, async (ctx) => {
+  bot.inlineQuery(/^a/, async (ctx,next) => {
     var input = ctx.inlineQuery.query.split(' ');
     input.shift();
     var query = input.join(' ');

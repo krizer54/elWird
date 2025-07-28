@@ -3,11 +3,12 @@ function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-const inlineQuranPhotoHandler = (bot, QuranPage) => {
+const inlineQuranPhotoHandler = (bot, QuranPage, uuidv4) => {
 
 
-  bot.inlineQuery(/^p/, async (ctx, next) => {
-    var match = ctx.inlineQuery.query.match(/^p/);
+  bot.inlineQuery(/^p(?:\s*(\d+)(?:-(\d+))?)?$/, async (ctx, next) => {
+
+    var match = ctx.inlineQuery.query.match(/^p(?:\s*(\d+)(?:-(\d+))?)?$/);
     var start = parseInt(match[1]);
     var end = parseInt(match[2]) || start;
     var offset = +ctx.inlineQuery.offset || 0;
@@ -21,8 +22,10 @@ const inlineQuranPhotoHandler = (bot, QuranPage) => {
           type: 'article',
           id: 1,
           title: '✍️ أكتب رقم الصفحة للبحث عنها',
+          description: `أو يمكنك كتابة مجال صفحات مثلا 10-15`,
           input_message_content: {
-            message_text: '🔍 الرجاء كتابة رقم الصفحة للبحث عنها في القرآن الكريم.',
+            message_text:`🔍 الرجاء كتابة رقم الصفحة للبحث عنها في القرآن الكريم.
+أو يمكنك كتابة مجال صفحات مثلا 10-15 لجلب الصفحات من 10 إلى 15.`,
           },
           reply_markup: {
             inline_keyboard: [
