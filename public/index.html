@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="تطبيق لمساعدة حفظة القرآن الكريم على مراجعة الحفظ عن طريق الكتابة والمقارنة">
+  <meta name="author" content="ZedKrimo">
+  <meta name="keywords" content="قرآن, حفظ, مراجعة, تطبيق, كتابة, قرآن كريم, تحدي الحفظ">
+  <meta name="theme-color" content="#10b981">
+  <meta name="robots" content="index, follow">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#10b981">
+
+  <!-- ميتا للـ Social Media -->
+  <meta property="og:title" content="تحدي حفظ القرآن الكريم ✍️📖">
+  <meta property="og:description" content="راجع حفظك لآيات القرآن الكريم بطريقة تفاعلية عبر الكتابة والمقارنة.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://elwirdbot.fly.dev"> <!-- عدله حسب الرابط النهائي -->
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>تحدي مراجعة الآيات</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="winBox"
+    style="display: none; background: #d1fae5; padding: 10px 14px; border-radius: 6px; color: #065f46; font-weight: bold; margin-top: 8px; text-align: center;">
+    🎉 ما شاء الله! ✅ تم الحفظ بنجاح!
+  </div>
+  <header class="collapsed">
+    <select id="surah"></select>
+    <input type="number" id="from" min="1" placeholder="من آية">
+    <input type="number" id="to" min="1" placeholder="إلى آية">
+    <button id="startChallengeBtn"
+      style="display:none; background: #10b981; color: white; padding: 10px 14px; border: none; border-radius: 6px; font-size: 15px; cursor: pointer;">🚀
+      بدأ التحدي</button>
+    <button class="toggle-btn" id="toggleHeader" style="display:inline-block">⚙️ تغيير السورة</button>
+
+  </header>
+  <main>
+    <textarea id="userInput" rows="6" disabled placeholder="اختر سورة و آيات لبدء"></textarea>
+    <div class="feedback" id="feedbackArea"></div>
+  </main>
+  <footer>
+    تواصل مع المطور عبر تيليجرام:
+    <a href="https://t.me/ZedKrimo" target="_blank">@ZedKrimo</a>
+  </footer>
+  <script src="script.js"> </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('✅ SW Registered', reg))
+        .catch(err => console.error('❌ SW Failed', err));
+    }
+  </script>
+
+
+
+
+</body>
+
+</html>

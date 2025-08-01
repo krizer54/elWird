@@ -8,12 +8,19 @@ primary_region = 'cdg'
 
 [build]
 
+[http_service]
+  internal_port = 3000
+  force_https = true
+  min_machines_running = 1
+
 [env]
   BOT_TOKEN="7280435919:AAGfA7J2J-U0aACYQX-IG2FcfjGnWg7l3Bg"
   dbURI="mongodb+srv://zedkrimo:1954@cluster0.aticu.mongodb.net/elWird?retryWrites=true&w=majority&appName=Cluster0"
   TZ="Asia/Riyadh"
+  WEBAPP_URL="https://elwirdbot.fly.dev"
+
 
 [[vm]]
   cpu_kind = 'shared'
   cpus = 1
-  memory_mb = 256
+  memory_mb = 512

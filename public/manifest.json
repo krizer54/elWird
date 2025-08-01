@@ -1,0 +1,21 @@
+{
+  "name": "تحدي حفظ القرآن الكريم",
+  "short_name": "ElWirdBot",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#10b981",
+  "theme_color": "#10b981",
+  "description": "راجع حفظك للقرآن بطريقة تفاعلية من خلال الكتابة.",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

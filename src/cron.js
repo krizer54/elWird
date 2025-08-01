@@ -3,7 +3,7 @@ const moment = require('moment-timezone');
 const fs = require('fs');
 const path = require('path');
 
-const cronHandler = async (bot, Group, QuranPage,AthkarData, cron, Scenes, enter, leave, Markup) => {
+const cronHandler = async (bot, Group, QuranPage, AthkarData, cron, Scenes, enter, leave, Markup) => {
 
     const photoPath = path.join(__dirname, '../db/athkarPhoto', 'athkarEvening.jpg');
 
@@ -54,14 +54,18 @@ const cronHandler = async (bot, Group, QuranPage,AthkarData, cron, Scenes, enter
             var parts = splitMessage(message);
 
             for (const part of parts) {
-                await bot.telegram.sendMessage(chatId, part + `\n<b>@elWirdBot</b>`, { parse_mode: 'HTML' }).then(res => { console.log(res) }).catch(err => { console.log(err) });
+                await bot.telegram.sendMessage(chatId, part + `\n<b>@elWirdBot</b>`, { parse_mode: 'HTML' })
+                .then(res => { console.log(res) }).catch(err => { console.log(err) })
+                .catch(err => {
+                console.error(`خطأ في الإرسال إلى ${group.chatId}:`, err.message);
+            });
             }
 
             // إرسال الرسالة
 
         } catch (err) {
             console.error('❌ خطأ أثناء إرسال الأذكار:', err.message);
-            bot.telegram.sendMessage(chatId, 'حدث خطأ أثناء تحميل الأذكار.');
+            // bot.telegram.sendMessage(chatId, 'حدث خطأ أثناء تحميل الأذكار.');
         }
     }
 
@@ -77,8 +81,8 @@ const cronHandler = async (bot, Group, QuranPage,AthkarData, cron, Scenes, enter
     }
 
     // تشتغل كل ساعة بين 4 و12 
-    // 0 4-12,16-22
-    cron.schedule('* * * * *', async () => {
+    // 0 1-23 * * *
+    cron.schedule('0 1-23 * * *', async () => {
         var currentHourInKSA = moment().tz('Asia/Riyadh').hour();
         console.log(currentHourInKSA)
         // فلتر الوقت لتحديد أذكار الصباح أو المساء حسب الساعة الحالية في السعودية
@@ -120,18 +124,47 @@ const cronHandler = async (bot, Group, QuranPage,AthkarData, cron, Scenes, enter
             [`quranTimes.${currentPeriod}`]: currentHourInKSA
         };
 
+        var caption;
+
+
+
         var groupsForQuranWird = await Group.find(QuranWirdFilter);
 
 
         for (const group of groupsForQuranWird) {
             try {
+                if (currentPeriod == 'morning') {
+                    caption = `<b>☀️ السلام عليكم ورحمة الله
+📖 صفحات هذا الصباح: ${group.quranCurrentPage}-${group.quranCurrentPage + 9}
+
+<blockquote>💬 تأمل وتفاعل:</blockquote>
+ما الآية التي استوقفتك؟ ما الخاطرة التي خطرت لك؟
+
+<blockquote>🕊️ من أذكار الصباح :</blockquote>
+ سور: الإخلاص || الفلق || الناس || أية الكرسي</b>
+`
+                } else {
+                    caption = `<b>☀️ السلام عليكم ورحمة الله
+📖 صفحات هذا المساء: ${group.quranCurrentPage}-${group.quranCurrentPage + 9}
+
+<blockquote>💬 تأمل وتفاعل:</blockquote>
+ما الآية التي استوقفتك؟ ما الخاطرة التي خطرت لك؟
+
+<blockquote>🕊️ من أذكار المساء :</blockquote>
+رَضيـتُ بِاللهِ رَبَّـاً وَبِالإسْلامِ ديـناً وَبِمُحَـمَّدٍ صلى الله عليه وسلم نَبِيّـاً. ( 3 مرات )
+👈 من قالها حين يصبح وحين يمسى كان حقا على الله أن يرضيه يوم القيامة. </b>
+`
+
+                }
+
+                console.log(caption)
                 var pagesIds = await getFileIdsFromPage(group.quranCurrentPage);
                 const resu = pagesIds.map((fileId, index) => {
                     return {
                         type: "photo",
                         media: fileId,
                         parse_mode: "HTML",
-                        caption: index === 0 ? `📖 الصفحات ${group.quranCurrentPage}-${group.quranCurrentPage + 9}` : undefined
+                        caption: index === 0 ? caption : undefined
                     };
                 });
 
@@ -139,17 +172,17 @@ const cronHandler = async (bot, Group, QuranPage,AthkarData, cron, Scenes, enter
                 // console.log(resu)
                 bot.telegram.sendMediaGroup(group.chatId, resu).then(async res => {
                     console.log(res)
-
-
                     const updatedGroup = await Group.findOneAndUpdate(
-                        { chatId: res[0].chat.id },
-                        { $set: { quranCurrentPage: group.quranCurrentPage+10} },
+                        { chatId: group.chatId },
+                        { $set: { quranCurrentPage: group.quranCurrentPage + 10 } },
                         { upsert: true, new: true }
                     );
 
                     console.log(updatedGroup)
 
-                })
+                }).catch(err => {
+                console.error(`خطأ في الإرسال إلى ${group.chatId}:`, err.message);
+            })
 
 
 

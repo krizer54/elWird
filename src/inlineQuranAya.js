@@ -3,9 +3,9 @@ function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
-const inlineQuranayaHandler = (bot, QuranData,uuidv4) => {
+const inlineQuranayaHandler = (bot, QuranData, uuidv4) => {
 
-  bot.inlineQuery(/^a/, async (ctx,next) => {
+  bot.inlineQuery(/^a/, async (ctx, next) => {
     var input = ctx.inlineQuery.query.split(' ');
     input.shift();
     var query = input.join(' ');
@@ -19,9 +19,12 @@ const inlineQuranayaHandler = (bot, QuranData,uuidv4) => {
         {
           type: 'article',
           id: 1,
-          title: '✍️ أكتب محتوى الآية للبحث عنها',
+          thumbnail_url:"https://drive.google.com/uc?export=download&id=1ck_wV3_YiutquNTKYg37dXOr0Z3KDDaX",
+          title: '✍️ أكتب كلمات من الآية للبحث عنها ',
+          description: 'مثال: لا تسمع إلا همسا',
           input_message_content: {
-            message_text: '🔍 الرجاء كتابة جزء من الآية للبحث عنها في القرآن الكريم.',
+            message_text: `🔍 الرجاء كتابة جزء من الآية للبحث عنها في القرآن الكريم.
+مثال: لا تسمع إلا همسا `,
           },
           reply_markup: {
             inline_keyboard: [
@@ -32,7 +35,13 @@ const inlineQuranayaHandler = (bot, QuranData,uuidv4) => {
             ]
           }
         },
-      ]);
+      ],
+        {cache_time: 0,button:{
+            text: '🔎 أكتب محتوى الآية للبحث عنها',
+            start_parameter:"start"
+
+          }}
+        );
     }
 
     const results = QuranData
@@ -41,6 +50,7 @@ const inlineQuranayaHandler = (bot, QuranData,uuidv4) => {
         return {
           type: 'article',
           id: uuidv4(),
+          thumbnail_url: "https://drive.google.com/uc?export=download&id=1HX0MNepr-CCW7D4i6R8HNkEbQNFwdOy4",
           title: `📖 ${aya.aya_text_emlaey}`,
           description: `سورة ${aya.sura_name_ar} - آية ${aya.aya_no}`,
           input_message_content: {

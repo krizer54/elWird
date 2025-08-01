@@ -14,6 +14,8 @@ const inlineQuranPhotoHandler = (bot, QuranPage, uuidv4) => {
     var offset = +ctx.inlineQuery.offset || 0;
     var limit = 50;
 
+    console.log(match)
+
     let pagesToShow;
 
     if (!start) {
@@ -40,6 +42,8 @@ const inlineQuranPhotoHandler = (bot, QuranPage, uuidv4) => {
     } else if (start && !end) {
       // صفحة واحدة
       pagesToShow = await QuranPage.find({ page: start });
+    console.log(pagesToShow)
+
     } else {
       // مجال صفحات
       var minPage = Math.min(start, end);
@@ -48,6 +52,7 @@ const inlineQuranPhotoHandler = (bot, QuranPage, uuidv4) => {
         page: { $gte: minPage, $lte: maxPage }
       }).sort({ page: 1 }).limit(50);
     }
+    console.log(pagesToShow)
 
     var results = pagesToShow.map((page) => ({
       type: 'photo',
@@ -66,7 +71,11 @@ const inlineQuranPhotoHandler = (bot, QuranPage, uuidv4) => {
     }));
 
     var next_offset = offset + limit < 605 ? String(offset + limit) : undefined;
-    await ctx.answerInlineQuery(results.slice(offset, next_offset), { next_offset, cache_time: 10 });
+    await ctx.answerInlineQuery(results.slice(offset, next_offset), { next_offset, cache_time: 10,button:{
+            text: '🔎 أكتب رقم الصفحة أو مجال الصفحات للبحث',
+            start_parameter:"start"
+
+          }});
     next(ctx)
   });
 };

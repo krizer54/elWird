@@ -15,12 +15,12 @@ const inlineAthkarHandler = (bot, AthkarData,uuidv4) => {
 
   bot.inlineQuery(/^t/, async (ctx,next) => {
     var categories = [
-      { "category": "أذكار الصباح", "desc": "حصن للإنسان من الشيطان وشرور الدنيا، وتجلب الطمأنينة والسكينة للقلب" },
-      { "category": "أذكار الاستيقاظ", "desc": "تجلب الخير والبركة للمسلم في يومه، وتحميه من الشرور" },
-      { "category": "أذكار المساء", "desc": "تحصّن المسلم من الشرور، وتجلب له الأجر والثواب" },
-      { "category": "أذكار النوم", "desc": "أذكار النوم تحمي من شرور الشيطان وتوسوساته" },
-      { "category": "أذكار بعد الصلاة", "desc": "سبب لمغفرة الذنوب، ورفعة الدرجات، ودفع الهموم والغموم" },
-      { "category": "تسابيح", "desc": "تسابيح" },
+      { "category": "أذكار الصباح", "desc": "حصن للإنسان من الشيطان وشرور الدنيا، وتجلب الطمأنينة والسكينة للقلب", },
+      { "category": "أذكار الاستيقاظ", "desc": "تجلب الخير والبركة للمسلم في يومه، وتحميه من الشرور", },
+      { "category": "أذكار المساء", "desc": "تحصّن المسلم من الشرور، وتجلب له الأجر والثواب", },
+      { "category": "أذكار النوم", "desc": "أذكار النوم تحمي من شرور الشيطان وتوسوساته", },
+      { "category": "أذكار بعد الصلاة", "desc": "سبب لمغفرة الذنوب، ورفعة الدرجات، ودفع الهموم والغموم",},
+      { "category": "تسابيح", "desc": "تسابيح", },
       { "category": "أدعية قرآنية", "desc": "أدعية قرآنية" },
       { "category": "أدعية الأنبياء", "desc": "أدعية الأنبياء" },
     ]
@@ -32,6 +32,7 @@ const inlineAthkarHandler = (bot, AthkarData,uuidv4) => {
       return {
         type: 'article',
         id: uuidv4(),
+        thumbnail_url:"https://drive.google.com/uc?export=download&id=1Py30P-FCVkwljQ7oXNNNx_WJ52ar3Nsk",
         title: `📖 ${el.category}`,
         description: `${el.desc}`,
         input_message_content: {
