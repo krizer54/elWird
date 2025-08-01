@@ -4,7 +4,6 @@ const groupHandler = async (bot, Scenes, enter, leave, Markup, Group) => {
         if (ctx.update.my_chat_member.new_chat_member.status == "administrator") {
             // console.log(ctx.update.my_chat_member)
 
-
             // console.log(ctx.update.my_chat_member.chat.id)
             var chatId = ctx.update.my_chat_member.chat.id
 
