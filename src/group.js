@@ -8,6 +8,7 @@ const groupHandler = async (bot, Scenes, enter, leave, Markup, Group) => {
             // console.log(ctx.update.my_chat_member.chat.id)
             var chatId = ctx.update.my_chat_member.chat.id
 
+            
             // console.log(ctx.update.my_chat_member.chat.title)
             var chatName = ctx.update.my_chat_member.chat.title
 
