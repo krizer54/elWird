@@ -230,6 +230,7 @@ bot.on("inline_query", async (ctx, next) => {
 // })
 
 var menuKeyboard = {
+    
     reply_markup: {
         inline_keyboard: [
             [
@@ -247,6 +248,7 @@ var menuKeyboard = {
 }
 
 bot.command("menu", async (ctx, next) => {
+
     await ctx.replyWithHTML('⚙️ اختر الخدمة التي تريد:', menuKeyboard);
 })
 

@@ -5,7 +5,7 @@ function escapeRegex(text) {
 
 const inlineQuranayaHandler = (bot, QuranData, uuidv4) => {
 
-  bot.inlineQuery(/^a/, async (ctx, next) => {
+  bot.inlineQuery(/^a/, async (ctx) => {
     var input = ctx.inlineQuery.query.split(' ');
     input.shift();
     var query = input.join(' ');
@@ -14,37 +14,43 @@ const inlineQuranayaHandler = (bot, QuranData, uuidv4) => {
     var limit = 50;
 
 
-    if (!query || query.length < 2) {
-      return ctx.answerInlineQuery([
-        {
-          type: 'article',
-          id: 1,
-          thumbnail_url:"https://drive.google.com/uc?export=download&id=1ck_wV3_YiutquNTKYg37dXOr0Z3KDDaX",
-          title: '✍️ أكتب كلمات من الآية للبحث عنها ',
-          description: 'مثال: لا تسمع إلا همسا',
-          input_message_content: {
-            message_text: `🔍 الرجاء كتابة جزء من الآية للبحث عنها في القرآن الكريم.
+
+
+    var typeAyaToSearch = {
+      type: 'article',
+      id: 1,
+      thumbnail_url: "https://drive.google.com/uc?export=download&id=1ck_wV3_YiutquNTKYg37dXOr0Z3KDDaX",
+      title: '✍️ أكتب كلمات من الآية للبحث عنها ',
+      description: 'مثال: لا تسمع إلا همسا',
+      input_message_content: {
+        message_text: `🔍 الرجاء كتابة جزء من الآية للبحث عنها في القرآن الكريم.
 مثال: لا تسمع إلا همسا `,
-          },
-          reply_markup: {
-            inline_keyboard: [
-              [
-                { text: 'بحث عن أية', switch_inline_query_current_chat: 'a ' },
-              ],
+      },
+      reply_markup: {
+        inline_keyboard: [
+          [
+            { text: 'بحث عن أية', switch_inline_query_current_chat: 'a ' },
+          ],
 
-            ]
-          }
-        },
-      ],
-        {cache_time: 0,button:{
-            text: '🔎 أكتب محتوى الآية للبحث عنها',
-            start_parameter:"start"
-
-          }}
-        );
+        ]
+      }
     }
 
-    const results = QuranData
+
+    if (!query || query.length < 3 || Number(query)) {
+      return ctx.answerInlineQuery([typeAyaToSearch],
+        {
+          cache_time: 0, button: {
+            text: '🔎 أكتب محتوى الآية للبحث عنها',
+            start_parameter: "start"
+
+          }
+        }
+      );
+    }
+
+
+    var results = QuranData
       .filter((aya) => aya.aya_text_emlaey.includes(query))
       .map((aya) => {
         return {
@@ -67,11 +73,23 @@ const inlineQuranayaHandler = (bot, QuranData, uuidv4) => {
           }
         };
       });
+
+
+    if (!results.length) {
+      return ctx.answerInlineQuery([typeAyaToSearch], {
+        cache_time: 0,
+        button: {
+          text: '🔎 أكتب محتوى الآية للبحث عنها',
+          start_parameter: "start"
+        }
+      });
+    }
+
     var next_offset = offset + limit < 150 ? String(offset + limit) : undefined;
 
     // await ctx.answerInlineQuery(results, { cache_time: 0 });
-    await ctx.answerInlineQuery(results.slice(offset, next_offset), { next_offset, cache_time: 10 });
-    next(ctx)
+    await ctx.answerInlineQuery(results.slice(offset, next_offset), { next_offset, cache_time: 0 });
+
   });
 
 

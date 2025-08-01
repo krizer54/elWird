@@ -27,9 +27,10 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
       : "✅ تشغيل خدمة إرسال الورد القرآني";
 
     ctx.deleteMessage()
-    await ctx.reply(`🔧 إعدادات "${item.chatName}":\n\n🌤 أذكار الصباح: ${morning}\n🌙 أذكار المساء: ${evening}
-🌤 ورد الصباح: ${quranMorning}\n🌙 ورد المساء: ${quranEvening}`,
-      Markup.inlineKeyboard([
+    await ctx.reply(`<b><blockquote>🔧 إعدادات "${item.chatName}":</blockquote>\n\n🌤 أذكار الصباح: ${morning}\n\n🌙 أذكار المساء: ${evening}
+      
+🌤 ورد الصباح: ${quranMorning}\n\n🌙 ورد المساء: ${quranEvening}</b>`,
+      {parse_mode:"HTML", reply_markup: Markup.inlineKeyboard([
         [Markup.button.callback("⏰ توقيت أذكار المساء", `edit_evening_${groupId}`),
         Markup.button.callback("⏰ توقيت أذكار الصباح", `edit_morning_${groupId}`)
         ],
@@ -37,8 +38,8 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
         Markup.button.callback("⏰📖 توقيت قرأن الصباح", `edit_quran_morning_${groupId}`)
         ],
         [Markup.button.callback(toggleQuranWirdText, `toggle_quran_wird_${groupId}`)],
-        [Markup.button.callback("🏠 القائمة الرئيسية ", "Menu"),]
-      ]));
+        [Markup.button.callback("🏠 القائمة الرئيسية ", "Menu")]
+      ]).reply_markup});
   }
 
   function groupButtonsInRows(buttons, perRow = 4) {
@@ -60,15 +61,16 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
     var items = await Group.find({ adminChatId: userId });
     if (!items.length) return ctx.editMessageText("❌ لا توجد " + (type === 'group' ? 'مجموعات' : 'قنوات') + " مسجلة.");
 
-    let text = `🔧 إختر ${(type === 'group' ? 'مجموعة' : 'قناة')} لتعديل إعداداتها:\n\n`;
+        let text = `<b>🔧 إختر مجموعة أو قناة لتعديل إعداداتها:\n\n</b>`;
+
     var buttons = [];
 
     items.forEach((item, index) => {
-      text += `${index + 1}. ${item.chatName}\n`;
-      buttons.push([Markup.button.callback((index + 1).toString(), `settingsId_${item.chatId}`)]);
+      text += `<b>${index + 1}. ${item.chatName}</b>\n`;
+      buttons.push([Markup.button.callback((item.chatName).toString(), `settingsId_${item.chatId}`)]);
     });
 
-    return ctx.editMessageText(text, Markup.inlineKeyboard(buttons));
+    return ctx.editMessageText(text, {parse_mode:"HTML", reply_markup: Markup.inlineKeyboard(buttons).reply_markup});
   });
 
   // 📌 عرض إعدادات القناة أو المجموعة
@@ -135,9 +137,11 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
       }
     }
 
+    buttons.push(Markup.button.callback("🏠 القائمة الرئيسية ", "Menu"));
 
-    return ctx.editMessageText(`🕔 اختر توقيت أذكار الصباح بتوقيت السعودية.
-الوقت الأن في السعودية : ${currentHourInKSA}`, Markup.inlineKeyboard(groupButtonsInRows(buttons, perRow = 4)));
+
+    return ctx.editMessageText(`🕔 اختر توقيت أذكار ${isMorning ? 'الصباح' : 'المساء'} بتوقيت السعودية.
+<blockquote><b>الوقت الأن في السعودية : ${currentHourInKSA}</b></blockquote>`, {parse_mode:"HTML", reply_markup:Markup.inlineKeyboard(groupButtonsInRows(buttons, perRow = 4)).reply_markup});
   });
 
 
@@ -165,7 +169,7 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
       { new: true }).then(async res => {
         console.log(res)
         var nitem = await Group.findOne({ chatId: groupId });
-        ctx.reply(`✅ تم تحديد توقيت أذكار المساء على الساعة ${selectedTime}:00`);
+        ctx.replyWithHTML(`<b>✅ تم تحديد توقيت أذكار المساء على الساعة ${selectedTime}:00</b>`);
         showSettingsMenu(ctx, nitem, groupId)
       }).catch(err => {
         ctx.editMessageText(`❌ حدث خطأ فشل تحديد وقت الأذكار`, menuKeyboard);
@@ -199,10 +203,14 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
         buttons.push(Markup.button.callback(`${hour}:00`, `set_quran_evening_${groupId}_${hour}`));
       }
     }
+
+    buttons.push(Markup.button.callback("🏠 القائمة الرئيسية ", "Menu"));
+
     // console.log(buttons)
 
     await ctx.editMessageText(
-      `🕓 اختر توقيت ${isMorning ? 'الصباح' : 'المساء'} لتلقي الورد القرآني:`, Markup.inlineKeyboard(groupButtonsInRows(buttons, perRow = 4)));
+      `🕓 اختر توقيت ${isMorning ? 'الصباح' : 'المساء'} لتلقي الورد القرآني بتوقيت السعودية.
+<blockquote><b>الوقت الأن في السعودية : ${currentHourInKSA}</b></blockquote>`, {parse_mode:"HTML", reply_markup: Markup.inlineKeyboard(groupButtonsInRows(buttons, perRow = 3)).reply_markup});
   });
 
 
@@ -226,7 +234,7 @@ const AdhkarsettingsHandler = async (bot, Group, Scenes, enter, leave, Markup) =
 
     console.log(item)
 
-    await ctx.reply(`✅ تم ضبط توقيت الورد ${period === 'morning' ? 'الصباحي' : 'المسائي'} على الساعة ${time} بتوقيت السعودية.`);
+    await ctx.replyWithHTML(`<b>تم ضبط توقيت الورد ${period === 'morning' ? 'الصباحي' : 'المسائي'} على الساعة ${time} بتوقيت السعودية.</b>`);
     showSettingsMenu(ctx, item, groupId)
   });
 

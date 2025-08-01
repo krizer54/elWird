@@ -13,7 +13,7 @@ const inlineAthkarHandler = (bot, AthkarData,uuidv4) => {
   }
 
 
-  bot.inlineQuery(/^t/, async (ctx,next) => {
+  bot.inlineQuery(/^t/, async (ctx) => {
     var categories = [
       { "category": "أذكار الصباح", "desc": "حصن للإنسان من الشيطان وشرور الدنيا، وتجلب الطمأنينة والسكينة للقلب", },
       { "category": "أذكار الاستيقاظ", "desc": "تجلب الخير والبركة للمسلم في يومه، وتحميه من الشرور", },
@@ -55,7 +55,7 @@ const inlineAthkarHandler = (bot, AthkarData,uuidv4) => {
 
     await ctx.answerInlineQuery(results, { cache_time: 30 });
 
-    next(ctx)
+    
 
   })
 

@@ -76,7 +76,7 @@ const inlineQuranPhotoHandler = (bot, QuranPage, uuidv4) => {
             start_parameter:"start"
 
           }});
-    next(ctx)
+    
   });
 };
 
